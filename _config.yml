@@ -1,9 +1,9 @@
-title: Nighthawk Pages 
-description: "Class of 2025"
-owner_name: John Mortensen
-github_username: nighthawkcoders
-github_repo: "student_2025" 
-baseurl: "/student_2025"
+title: Snake Game 
+description: "Snake Game"
+owner_name: Alex Gustaf
+github_username: alexgstf
+github_repo: "snakegame" 
+baseurl: "/snakegame"
 future: true
 remote_theme: jekyll/minima
 minima:
