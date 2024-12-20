@@ -10,7 +10,7 @@ title: Snake
 
     body {
         font-family: 'Comic Sans MS', sans-serif;
-        background: #f1f1f1;
+        background: #2596be;
         margin: 0;
         padding: 0;
         overflow: hidden;
@@ -59,19 +59,23 @@ title: Snake
         font-size: 1.8rem;
     }
 
-    #menu a, #gameover a, #setting a {
-        font-size: 2.2rem;
-        display: block;
-        color: #ffeb3b;
-        text-decoration: none;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        transition: transform 0.3s, color 0.3s;
-    }
+#menu a, #gameover a, #setting a {
+    font-size: 2.2rem;
+    display: block;
+    color: #ffeb3b;
+    text-decoration: none;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    border: 2px solid #ffeb3b; /* Added border */
+    border-radius: 10px;      /* Rounded corners */
+    padding: 10px 15px;       /* Padding for better spacing */
+    transition: transform 0.3s, color 0.3s, border-color 0.3s;
+}
 
-    #menu a:hover, #gameover a:hover, #setting a:hover {
-        transform: scale(1.1);
-        color: #03a9f4;
-    }
+#menu a:hover, #gameover a:hover, #setting a:hover {
+    transform: scale(1.1);
+    color: #03a9f4;
+    border-color: #03a9f4; /* Change border color on hover */
+}
 
     #setting label {
         font-size: 1.4rem;
@@ -111,6 +115,14 @@ title: Snake
         img {
         image-rendering: smooth;
     }
+    .menu-image {
+    width: 800px; /* Adjust size as needed */
+    margin-top: 15px; /* Spacing between buttons and image */
+    border-radius: 10px; /* Optional: Rounded corners */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* Optional: Shadow for better visibility */
+    animation: fadeIn 1s ease-in-out; /* Optional: Smooth entry */
+}
+
 </style>
 
 
@@ -125,11 +137,13 @@ title: Snake
             <p>Welcome to Snake, press <span style="background-color: #FFFFFF; color: #000000">space</span> to begin</p>
             <a id="new_game" class="link-alert">New Game</a>
             <a id="setting_menu" class="link-alert">Settings</a>
+            <img src="{{site.baseurl}}/images/snakegamegraphic.png" alt="Menu Image" class="menu-image">
         </div>
         <div id="gameover" class="py-4 text-light">
             <p>Game Over, press <span style="background-color: #FFFFFF; color: #000000">space</span> to try again</p>
             <a id="new_game1" class="link-alert">New Game</a>
             <a id="setting_menu1" class="link-alert">Settings</a>
+            <img src="{{site.baseurl}}/images/snakegamegraphic.png" alt="Game Over Image" class="menu-image">
         </div>
         <canvas id="snake" class="wrap" width="320" height="320" tabindex="1"></canvas>
         <div id="setting" class="py-4 text-light">
@@ -181,6 +195,8 @@ title: Snake
     let food = { x: 0, y: 0 };
     let score = 0;
     let wall = 1; // Wall on by default
+    let hasPlayed = false; // Track if the game has been played
+
 
     // Load fruit and snake head images
     const fruitImage = new Image();
@@ -191,10 +207,23 @@ title: Snake
 
     const showScreen = (screen_opt) => {
         SCREEN = screen_opt;
+
         screen_menu.style.display = screen_opt === SCREEN_MENU ? "block" : "none";
         screen_game_over.style.display = screen_opt === SCREEN_GAME_OVER ? "block" : "none";
         screen_setting.style.display = screen_opt === SCREEN_SETTING ? "block" : "none";
         canvas.style.display = screen_opt === SCREEN_SNAKE ? "block" : "none";
+
+        // Show "Press Space" message only after playing once
+        const spaceMsg = screen_opt === SCREEN_MENU || screen_opt === SCREEN_GAME_OVER
+            ? screen_opt === SCREEN_MENU
+                ? hasPlayed
+                    ? 'Press <span style="background-color: #FFFFFF; color: #000000">space</span> to begin'
+                    : ''
+                : 'Press <span style="background-color: #FFFFFF; color: #000000">space</span> to try again'
+            : '';
+        
+        const menuText = screen_opt === SCREEN_MENU ? screen_menu.querySelector("p") : screen_game_over.querySelector("p");
+        if (menuText) menuText.innerHTML = spaceMsg;
     };
 
     window.onload = () => {
@@ -223,6 +252,7 @@ title: Snake
     };
 
     const newGame = () => {
+        hasPlayed = true
         showScreen(SCREEN_SNAKE);
         canvas.focus();
         score = 0;
