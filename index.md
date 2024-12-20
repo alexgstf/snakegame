@@ -10,10 +10,24 @@ title: Snake
 
     body {
         font-family: 'Comic Sans MS', sans-serif;
-        background: #2596be;
         margin: 0;
         padding: 0;
         overflow: hidden;
+        background: linear-gradient(45deg, #1e3a8a, #3b82f6, #2596be, #60a5fa, #1d4ed8);
+        background-size: 300% 300%;
+        animation: gradientShift 10s ease infinite;
+    }
+
+    @keyframes gradientShift {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
     }
 
     .wrap {
@@ -122,7 +136,6 @@ title: Snake
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* Optional: Shadow for better visibility */
     animation: fadeIn 1s ease-in-out; /* Optional: Smooth entry */
 }
-
 </style>
 
 
